@@ -100,11 +100,12 @@ def instance_one():
   
 
 def instance_two():
-    second_rectaurant = Restaurant("Koto", "Sushi")
-    first_restaurant.describe_restaurant()
-    first_restaurant.open_restaurant()
-    
+    second_restaurant = Restaurant("Koto", "Sushi")
+    second_restaurant.describe_restaurant()
+    second_restaurant.open_restaurant()
+
 def instace_three():
     third_restaurant = Restaurant("Fresh Kitchen", "American")
 
 instance_one()
+instance_two()
