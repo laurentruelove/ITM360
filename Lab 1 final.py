@@ -89,7 +89,7 @@ def instance_one():
 def cat_instance():
     cat = Cat("meredith")
     cat.rat()
-    print(cat.mood())
+    print(cat.mood()) # -1, Given the returned object is already a string in the mood() function, print() will return a none {self.name} in the output.
 
 def fish_instance():
     fishy = Fish("Blue", "Fresh Water")
