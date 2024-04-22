@@ -63,7 +63,8 @@ cur.execute('''CREATE TABLE IF NOT EXISTS Issue (
 cur.close()
 DataBase.close()
 
-
+# - 4pts *3, the attributes that are checked/updated in addBook(), searchBook() and updateBook() are not the same as the attributes created in 
+# the respective tables. The queries won't be passed along.
 def addBook():
     try:
         # Connect to MySQL Database
