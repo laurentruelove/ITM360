@@ -48,7 +48,7 @@ def login():
         user = cursor.fetchone()
 
         if user and check_password_hash(user[2], password):
-            login_user(User(user[0]))
+            login_user(User(user[0])) # to load the User class for authentication purpose, need to import user_loader from Database module or the main module because both have defined the class; -3 pts
             return redirect(url_for('auth.protected'))
 
         return redirect(url_for('auth.invalid'))
