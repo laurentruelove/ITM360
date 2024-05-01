@@ -1,0 +1,67 @@
+from flask import Flask, request, jsonify
+import mysql.connector
+
+app = Flask(__name__)
+
+# Connect to MySQL database
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="Oreo1234",
+    database="PROJECTS"
+)
+
+# Route to handle create project request
+@app.route('/create_project', methods=['POST'])
+def create_project():
+    data = request.json
+    project_id = data['project_id']
+    project_title = data['project_title']
+    project_details = data['project_details']
+    
+    try:
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO PROJECTS (ProjectID, Project_Title, Project_Details) VALUES (%s, %s, %s)", (project_id, project_title, project_details))
+        connection.commit()
+        cursor.close()
+        return jsonify({'message': 'Project created successfully'}), 200
+    except mysql.connector.IntegrityError:
+        return jsonify({'error': 'Project ID already exists'}), 409
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Route to handle fetch project details request
+@app.route('/fetch_project_details', methods=['GET'])
+def fetch_project_details():
+    project_id = request.args.get('project_id')
+    print("Received request to fetch project details for project ID:", project_id)  # Add this line for debugging
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM PROJECTS WHERE ProjectID = %s", (project_id,))
+        project = cursor.fetchone()
+        cursor.close()
+        if project:
+            return jsonify(project), 200
+        else:
+            return jsonify({'error': 'Project not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+# Route to handle update project details request
+@app.route('/update_project_details', methods=['PUT'])
+def update_project_details():
+    data = request.json
+    project_id = data['project_id']
+    new_project_details = data['project_details']
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("UPDATE PROJECTS SET Project_Details = %s WHERE ProjectID = %s", (new_project_details, project_id))
+        connection.commit()
+        cursor.close()
+        return jsonify({'message': 'Project details updated successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
