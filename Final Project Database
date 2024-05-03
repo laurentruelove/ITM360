@@ -1,0 +1,30 @@
+import tkinter as tk
+from tkinter import *
+import mysql.connector
+from PIL import Image, ImageTk
+from tkmacosx import Button
+
+# Connect to Students Database
+DataBase = mysql.connector.connect(
+  host ="localhost",
+  user ="root",
+  passwd ="Oreo1234",
+  database="PROJECTS")
+
+# Preparing a cursor object 
+cursor = DataBase.cursor()
+
+
+# Create table
+projects = """CREATE TABLE PROJECTS2 ( 
+                   PROJECTID VARCHAR(10) PRIMARY KEY,
+                   PASSWORD longtext,
+                   Project_Details VARCHAR(200)
+                   )
+                   """ # triple quotes for strings that span multiple lines
+
+cursor.execute(projects)
+
+# Close cursor and database connection
+cursor.close()
+DataBase.close()
